@@ -1,6 +1,7 @@
 //Libs
 import { Component } from 'react';
 import shortid from 'shortid';
+import PropTypes from 'prop-types';
 
 //Components
 import Title from './components/Title';
@@ -12,6 +13,16 @@ class App extends Component {
   state = {
     contacts: [],
     filter: '',
+  };
+
+  static defaultProps = {
+    contacts: [],
+    filter: '',
+  };
+
+  static propTypes = {
+    contacts: PropTypes.arrayOf(PropTypes.object),
+    filter: PropTypes.string,
   };
 
   //метод для добавления данных в разметку при получении данных с component ContactForm в Арр
@@ -38,18 +49,6 @@ class App extends Component {
     }));
   };
 
-  //метод для проверки на существующий контакт
-  // findContactName = contactName => {
-  //   const findName = this.state.contacts.find(
-  //     contact => contact.name === contactName,
-  //   );
-
-  //   if (findName) {
-  //     alert(`${contactName} is already in contacts!`);
-  //     return;
-  //   }
-  // };
-
   //метод для изменения данных в state по вводу в фильтр
   changeFilter = e => {
     this.setState({
@@ -67,6 +66,13 @@ class App extends Component {
     );
   };
 
+  //метод для удаления контакта по кнопке Удалить
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const { contacts, filter } = this.state; // деструкт свойств обекта state
 
@@ -77,14 +83,14 @@ class App extends Component {
         <Title title={'Phonebook'} />
         <ContactForm onSubmit={this.addContact} />
 
-        <div>
+        <div className="container">
           {contacts.length > 0 && (
             <>
               <Title title={'Contacts'} />
               <Filter valueFilter={filter} onChangeFilter={this.changeFilter} />
               <ContactList
                 contacts={filteredContactByName}
-                // onFindContactName={this.findContactName}
+                onDeleteContact={this.deleteContact}
               />
             </>
           )}

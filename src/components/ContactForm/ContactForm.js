@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 
 class ContactForm extends Component {
@@ -7,7 +8,17 @@ class ContactForm extends Component {
     number: '',
   };
 
-  handleInputNameChange = e => {
+  static defaultProps = {
+    name: '',
+    number: '',
+  };
+
+  static propTypes = {
+    name: PropTypes.string,
+    number: PropTypes.string,
+  };
+
+  handleInputChange = e => {
     // console.log(event.currentTarget.name);
     // console.log(event.currentTarget.value);
     const { name, value } = e.currentTarget;
@@ -47,7 +58,7 @@ class ContactForm extends Component {
               name="name"
               placeholder="Enter name"
               value={name}
-              onChange={this.handleInputNameChange}
+              onChange={this.handleInputChange}
             />
           </label>
         </div>
@@ -60,7 +71,7 @@ class ContactForm extends Component {
               name="number"
               placeholder="Enter phone"
               value={number}
-              onChange={this.handleInputNameChange}
+              onChange={this.handleInputChange}
             />
           </label>
         </div>
